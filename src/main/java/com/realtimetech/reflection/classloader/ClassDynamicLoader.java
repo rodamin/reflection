@@ -1,10 +1,12 @@
 package com.realtimetech.reflection.classloader;
 
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.HashMap;
 
-import com.realtimetech.reflection.classfile.classfile.ClassFile;
+import com.realtimetech.reflection.classfile.file.ClassFile;
 
-public class ClassDynamicLoader extends ClassLoader {
+public class ClassDynamicLoader extends URLClassLoader {
 	private HashMap<String, byte[]> classMap;
 
 	public ClassDynamicLoader() {
@@ -12,11 +14,19 @@ public class ClassDynamicLoader extends ClassLoader {
 	}
 
 	public ClassDynamicLoader(ClassLoader classLoader) {
-		super(classLoader);
+		super(new URL[0], classLoader);
 		this.classMap = new HashMap<String, byte[]>();
 	}
 
+	public void addURL(URL url) {
+		super.addURL(url);
+	}
+	
 	public void addClass(String className, byte[] bytes) {
+		this.classMap.put(className, bytes);
+	}
+
+	public void addClassFile(String className, byte[] bytes) {
 		this.classMap.put(className, bytes);
 	}
 
